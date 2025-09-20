@@ -46,13 +46,19 @@ module.exports = {
     port: process.env.DB_PORT,
     dialect: 'mysql',
     pool: {
-      max: 10,
-      min: 2,
-      acquire: 60000,
-      idle: 10000
+      max: 5,
+      min: 1,
+      acquire: 30000,
+      idle: 5000
     },
     dialectOptions: {
-      connectTimeout: 60000,
+      connectTimeout: 30000,
+      acquireTimeout: 30000,
+      timeout: 30000,
+    },
+    retry: {
+      max: 3,
+      timeout: 10000
     },
     logging: false
   },

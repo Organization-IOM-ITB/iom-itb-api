@@ -53,8 +53,13 @@ const GetDonations = async ({ id = null, query = {}, search = '', isAdmin = fals
     options.where.name = { [Op.like]: `%${search}%` };
   }
 
-  try {
-    const { rows, count } = await Donations.findAndCountAll(options);
+  // Retry logic for database connection
+  let retries = 3;
+  let lastError;
+  
+  while (retries > 0) {
+    try {
+      const { rows, count } = await Donations.findAndCountAll(options);
     const processedRows = isAdmin
     ? rows
     : rows.map(donation => {
@@ -70,27 +75,37 @@ const GetDonations = async ({ id = null, query = {}, search = '', isAdmin = fals
         };
       });
 
-    return {
-      data: processedRows,
-      total: count,
-      currentPage: page,
-      totalPages: Math.ceil(count / limit),
-    };
-  } catch (error) {
-    console.error('Database error in getDonations:', error);
-    
-    // Check if it's a connection timeout error
-    if (error.message.includes('ETIMEDOUT') || error.message.includes('connect')) {
-      // Return empty data instead of throwing error for better UX
       return {
-        data: [],
-        total: 0,
+        data: processedRows,
+        total: count,
         currentPage: page,
-        totalPages: 0,
+        totalPages: Math.ceil(count / limit),
       };
+    } catch (error) {
+      lastError = error;
+      retries--;
+      
+      if (retries > 0) {
+        console.log(`Database connection failed, retrying... (${retries} attempts left)`);
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
+        continue;
+      }
+      
+      console.error('Database error in getDonations after retries:', error);
+      
+      // Check if it's a connection timeout error
+      if (error.message.includes('ETIMEDOUT') || error.message.includes('connect')) {
+        // Return empty data instead of throwing error for better UX
+        return {
+          data: [],
+          total: 0,
+          currentPage: page,
+          totalPages: 0,
+        };
+      }
+      
+      throw new Error(`Failed to retrieve donation data: ${error.message}`);
     }
-    
-    throw new Error(`Failed to retrieve donation data: ${error.message}`);
   }
 };
 
