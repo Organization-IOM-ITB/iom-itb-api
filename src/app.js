@@ -14,12 +14,9 @@ const router = require('./routes/index');
 // Konfigurasi CORS
 const corsOptions = {
   origin: [
-    'http://localhost:3000', 
-    'http://localhost:8080', 
-    'http://localhost:8081',
     process.env.WEB_APP_URL,
     process.env.WEB_ADMIN_URL
-  ].filter(Boolean), // Filter untuk menghilangkan nilai undefined/null
+  ].filter(Boolean),
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true
 };
