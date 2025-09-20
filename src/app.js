@@ -90,14 +90,25 @@ app.use((req, res, next) => {
   const origin = req.headers.origin;
   const allowedOrigins = corsOptions.origin;
   
+  console.log('🔧 Manual CORS:', {
+    origin: origin,
+    allowedOrigins: allowedOrigins,
+    isAllowed: allowedOrigins.includes(origin),
+    method: req.method
+  });
+  
   if (allowedOrigins.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,PATCH,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    console.log('✅ CORS headers added for origin:', origin);
+  } else {
+    console.log('❌ Origin not allowed:', origin);
   }
   
   if (req.method === 'OPTIONS') {
+    console.log('🔄 Handling OPTIONS request');
     res.sendStatus(204);
     return;
   }
