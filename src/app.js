@@ -12,14 +12,6 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const router = require('./routes/index');
 
-// Debug environment variables untuk deployment
-console.log('=== Environment Variables Debug ===');
-console.log('WEB_APP_URL:', process.env.WEB_APP_URL);
-console.log('WEB_ADMIN_URL:', process.env.WEB_ADMIN_URL);
-console.log('API_UPLOAD_URL:', process.env.API_UPLOAD_URL);
-console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('All env vars with WEB:', Object.keys(process.env).filter(key => key.includes('WEB')));
-
 // Konfigurasi CORS - Dynamic origins dari environment variables
 const getCorsOrigins = () => {
   const origins = [];
