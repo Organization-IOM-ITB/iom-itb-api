@@ -15,7 +15,8 @@ const router = require('./routes/index');
 const corsOptions = {
   origin: [
     process.env.WEB_APP_URL,
-    process.env.WEB_ADMIN_URL
+    process.env.WEB_ADMIN_URL,
+    process.env.API_UPLOAD_URL,
   ].filter(Boolean),
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true
