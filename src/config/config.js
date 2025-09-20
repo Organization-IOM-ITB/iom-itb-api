@@ -18,16 +18,6 @@ module.exports = {
     host: process.env.DB_HOST || '195.110.58.17',
     port: process.env.DB_PORT || 3306,
     dialect: 'mysql',
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    },
-    dialectOptions: {
-      connectTimeout: 30000,
-    },
-    logging: false
   },
   test: {
     username: process.env.DB_USERNAME || 'root',
@@ -36,16 +26,6 @@ module.exports = {
     host: process.env.DB_HOST || '195.110.58.17',
     port: process.env.DB_PORT || 3306,
     dialect: 'mysql',
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    },
-    dialectOptions: {
-      connectTimeout: 30000,
-    },
-    logging: false
   },
   production: {
     username: process.env.DB_USERNAME || 'root' ,
@@ -54,17 +34,6 @@ module.exports = {
     host: process.env.DB_HOST || '195.110.58.17',
     port: process.env.DB_PORT || 3306,
     dialect: 'mysql',
-    pool: {
-      max: 1,
-      min: 0,
-      acquire: 10000,
-      idle: 1000
-    },
-    dialectOptions: {
-      connectTimeout: 10000,
-    },
-    logging: console.log,
-    benchmark: true
   },
 };
 
