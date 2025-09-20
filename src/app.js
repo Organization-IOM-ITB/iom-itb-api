@@ -48,7 +48,8 @@ const corsOptions = {
   credentials: true
 };
 
-console.log('CORS Origins:', corsOptions.origin);
+// Debug CORS function
+const corsOrigins = getCorsOrigins();
 
 const app = express();
 
@@ -78,7 +79,40 @@ app.use(
 
 app.use(morgan('dev'));
 // app.use(helmet());
+
+// Debug CORS middleware
+app.use((req, res, next) => {
+  console.log('🔍 CORS Debug:', {
+    method: req.method,
+    origin: req.headers.origin,
+    url: req.url,
+    corsOrigins: corsOptions.origin
+  });
+  next();
+});
+
 app.use(cors(corsOptions));
+
+// Manual CORS headers sebagai fallback
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  const allowedOrigins = corsOptions.origin;
+  
+  if (allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,PATCH,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  }
+  
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(204);
+    return;
+  }
+  
+  next();
+});
+
 app.use(express.json());
 
 app.use('/', express.static(path.join(__dirname, '')), (req, res, next) => {
