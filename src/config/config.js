@@ -55,15 +55,16 @@ module.exports = {
     port: process.env.DB_PORT,
     dialect: 'mysql',
     pool: {
-      max: 5,
-      min: 1,
-      acquire: 30000,
-      idle: 5000
+      max: 1,
+      min: 0,
+      acquire: 10000,
+      idle: 1000
     },
     dialectOptions: {
-      connectTimeout: 30000,
+      connectTimeout: 10000,
     },
-    logging: false
+    logging: console.log,
+    benchmark: true
   },
 };
 

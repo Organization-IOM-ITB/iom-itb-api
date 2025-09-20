@@ -40,13 +40,23 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-// Test database connection
+// Test database connection with detailed error info
 sequelize.authenticate()
   .then(() => {
     console.log('✅ Database connection has been established successfully.');
+    
+    // Test a simple query
+    return sequelize.query('SELECT 1 as test');
+  })
+  .then(([results, metadata]) => {
+    console.log('✅ Database query test successful:', results);
   })
   .catch(err => {
-    console.error('❌ Unable to connect to the database:', err);
+    console.error('❌ Unable to connect to the database:', err.message);
+    console.error('Error code:', err.parent?.code);
+    console.error('Error errno:', err.parent?.errno);
+    console.error('Error syscall:', err.parent?.syscall);
+    console.error('Full error:', err);
   });
 
 module.exports = db;
