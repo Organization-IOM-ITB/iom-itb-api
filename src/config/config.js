@@ -12,38 +12,28 @@ console.log('NODE_ENV:', process.env.NODE_ENV);
 
 module.exports = {
   development: {
-    username: process.env.DB_USERNAME || 'root',
-    password: process.env.DB_PASSWORD || 'cyeQ9o2AMoSU66uPYJkL9f4mxY8mDdRrDYbInWWqm2qWV6MEETvVDzR4Xswa2eKa',
-    database: process.env.DB_DATABASE || 'iom-itb',
-    host: process.env.DB_HOST || '195.110.58.17',
-    port: process.env.DB_PORT || 3306,
-    dialect: 'mysql',
-  },
-  test: {
-    username: process.env.DB_USERNAME || 'root',
-    password: process.env.DB_PASSWORD || 'cyeQ9o2AMoSU66uPYJkL9f4mxY8mDdRrDYbInWWqm2qWV6MEETvVDzR4Xswa2eKa',
-    database: process.env.DB_DATABASE || 'iom-itb',
-    host: process.env.DB_HOST || '195.110.58.17',
-    port: process.env.DB_PORT || 3306,
-    dialect: 'mysql',
-  },
-  production: {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: 'mysql',
-    pool: {
-      max: 5,
-      min: 1,
-      acquire: 30000,
-      idle: 10000
-    },
-    dialectOptions: {
-      connectTimeout: 30000,
-    },
-    logging: false
+  },
+  test: {
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: 'mysql',
+  },
+  production: {
+    username: process.env.DB_USERNAME ,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: 'mysql',
   },
 };
 
