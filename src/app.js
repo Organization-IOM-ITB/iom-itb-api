@@ -1,4 +1,5 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const express = require('express');
 const morgan = require('morgan');
@@ -7,20 +8,19 @@ const cors = require('cors');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const router = require('./routes/index');
-// const expressListEndpoints = require('express-list-endpoints');
-
-// const { forgotPasswordJob } = require('./utils/cron');
 
 // Konfigurasi CORS
 const corsOptions = {
   origin: [
     process.env.WEB_APP_URL,
     process.env.WEB_ADMIN_URL,
-    process.env.API_UPLOAD_URL,
-  ].filter(Boolean),
+    process.env.API_UPLOAD_URL
+  ].filter(Boolean), // Filter untuk menghilangkan nilai undefined/null
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true
 };
+
+console.log('CORS Origins:', corsOptions.origin);
 
 const app = express();
 
@@ -53,7 +53,6 @@ app.use(morgan('dev'));
 app.use(cors(corsOptions));
 app.use(express.json());
 
-const path = require('path');
 app.use('/', express.static(path.join(__dirname, '')), (req, res, next) => {
   console.log(`Serving static file: ${req.path}`);
   next();
