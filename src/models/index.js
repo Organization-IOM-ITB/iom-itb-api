@@ -57,6 +57,10 @@ sequelize.authenticate()
     console.error('Error errno:', err.parent?.errno);
     console.error('Error syscall:', err.parent?.syscall);
     console.error('Full error:', err);
+    
+    // Set a flag to indicate database is not available
+    global.databaseAvailable = false;
+    console.log('⚠️  Database not available, using fallback responses');
   });
 
 module.exports = db;
