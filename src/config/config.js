@@ -53,7 +53,6 @@ module.exports = {
     },
     dialectOptions: {
       connectTimeout: 60000,
-      reconnect: true
     },
     logging: false
   },

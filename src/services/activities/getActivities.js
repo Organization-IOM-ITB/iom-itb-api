@@ -40,6 +40,19 @@ const GetActivities = async ({ slug = null, search = '', page = 1, limit = 10 })
       totalPages: Math.ceil(count / pageLimit),
     };
   } catch (error) {
+    console.error('Database error in getActivities:', error);
+    
+    // Check if it's a connection timeout error
+    if (error.message.includes('ETIMEDOUT') || error.message.includes('connect')) {
+      // Return empty data instead of throwing error for better UX
+      return {
+        data: [],
+        total: 0,
+        currentPage: pageNumber,
+        totalPages: 0,
+      };
+    }
+    
     throw new Error(`Gagal mengambil data Kegiatan: ${error.message}`);
   }
 };
