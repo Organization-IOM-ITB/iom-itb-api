@@ -83,9 +83,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors(corsOptions));
-
-// Manual CORS headers sebagai fallback
+// Manual CORS implementation (mengganti cors library)
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   const allowedOrigins = corsOptions.origin;
@@ -108,7 +106,7 @@ app.use((req, res, next) => {
   }
   
   if (req.method === 'OPTIONS') {
-    console.log('🔄 Handling OPTIONS request');
+    console.log('🔄 Handling OPTIONS request, sending 204');
     res.sendStatus(204);
     return;
   }
