@@ -77,6 +77,13 @@ const GetDonations = async ({ id = null, query = {}, search = '', isAdmin = fals
       totalPages: Math.ceil(count / limit),
     };
   } catch (error) {
+    console.error('Database error in getDonations:', error);
+    
+    // Check if it's a connection timeout error
+    if (error.message.includes('ETIMEDOUT') || error.message.includes('connect')) {
+      throw new Error('Database connection timeout. Please try again later.');
+    }
+    
     throw new Error(`Failed to retrieve donation data: ${error.message}`);
   }
 };

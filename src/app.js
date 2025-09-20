@@ -40,9 +40,6 @@ const corsOptions = {
   credentials: true
 };
 
-// Debug CORS function
-const corsOrigins = getCorsOrigins();
-
 const app = express();
 
 const swaggerOption = {
@@ -72,41 +69,19 @@ app.use(
 app.use(morgan('dev'));
 // app.use(helmet());
 
-// Debug CORS middleware
-app.use((req, res, next) => {
-  console.log('🔍 CORS Debug:', {
-    method: req.method,
-    origin: req.headers.origin,
-    url: req.url,
-    corsOrigins: corsOptions.origin
-  });
-  next();
-});
-
-// Manual CORS implementation (mengganti cors library)
+// Manual CORS implementation
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   const allowedOrigins = corsOptions.origin;
-  
-  console.log('🔧 Manual CORS:', {
-    origin: origin,
-    allowedOrigins: allowedOrigins,
-    isAllowed: allowedOrigins.includes(origin),
-    method: req.method
-  });
   
   if (allowedOrigins.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,PATCH,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    console.log('✅ CORS headers added for origin:', origin);
-  } else {
-    console.log('❌ Origin not allowed:', origin);
   }
   
   if (req.method === 'OPTIONS') {
-    console.log('🔄 Handling OPTIONS request, sending 204');
     res.sendStatus(204);
     return;
   }
@@ -116,10 +91,7 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-app.use('/', express.static(path.join(__dirname, '')), (req, res, next) => {
-  console.log(`Serving static file: ${req.path}`);
-  next();
-});
+app.use('/', express.static(path.join(__dirname, '')));
 
 app.use(router);
 

@@ -40,4 +40,13 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+// Test database connection
+sequelize.authenticate()
+  .then(() => {
+    console.log('✅ Database connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('❌ Unable to connect to the database:', err);
+  });
+
 module.exports = db;
